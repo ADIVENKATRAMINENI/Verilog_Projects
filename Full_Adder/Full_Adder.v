@@ -1,0 +1,23 @@
+module Full_Adder(a,b,cin,s,c);
+
+input a,b,c1;
+output s,ca;
+
+assign s =a^b^c1;
+assign c=(a&b)|(b&c1)|(c1&a);
+
+endmodule
+
+
+module multi_bit(input [3:0]A,[3:0]B,Cin,output [3:0]S,Cout];
+
+
+wire c1,c2,c3;
+
+Full_Adder fa0(.a(A[0]),.b(B[0]),.cin(Cin),.s(S[0]),.c(c1));
+Full_Adder fa1(.a(A[1]),.b(B[1]),.cin(c1),.s(S[1]),.c(c2));
+Full_Adder fa2(.a(A[2]),.b(B[2]),.cin(c2),.s(S[2]),.c(c3));
+Full_Adder fa3(.a(A[3]),.b(B[3]),.cin(c3),.s(S[3]),.c(Cout));
+
+
+endmodule

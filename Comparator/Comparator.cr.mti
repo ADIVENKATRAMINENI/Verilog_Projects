@@ -1,0 +1,15 @@
+C:/Verilog/work/2bit_comp.v {1 {vlog -work work -stats=none C:/Verilog/work/2bit_comp.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module bit_comp
+
+Top level modules:
+	bit_comp
+
+} {} {}} C:/Verilog/work/2bit_comp_tb.v {1 {vlog -work work -stats=none C:/Verilog/work/2bit_comp_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module bit_comp_tb
+
+Top level modules:
+	bit_comp_tb
+
+} {} {}}

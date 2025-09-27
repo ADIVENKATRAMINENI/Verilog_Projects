@@ -1,0 +1,21 @@
+module bit_comp(input [3:0]A,[3:0]B;output reg grt,reg sma,reg eq);
+
+always @(*)
+begin
+if(A>B)
+begin 
+grt=1;sma=0;eq=0;
+end
+else if(A<B)
+begin
+grt=0;sma=1;eq=0;
+end
+else if(A==B)
+begin
+grt=0;sma=0;eq=1;
+end
+
+end
+
+
+endmodule

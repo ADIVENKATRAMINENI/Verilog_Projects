@@ -1,0 +1,49 @@
+module bit_comp_tb;
+
+reg [3:0]A1,B1;
+wire grt1,sma1,eq1;
+
+bit_comp dut(.A(A1),.B(B1),.grt(grt1),.sma(sma1),.eq(eq1));
+
+
+initial 
+begin
+$display("Time A1 B1 | greater smaller  equal");
+$monitor("%0t %b %b | %d %d %d",$time,A1,B1,grt1,sma1,eq1);
+A1=4'b0010;B1=4'b0001;#10;
+A1=4'b0010;B1=4'b0010;#10;
+A1=4'b0001;B1=4'b0101;#10;
+A1=4'b0100;B1=4'b0010;#10;
+A1=4'b0010;B1=4'b0111;#10;
+A1=4'b0111;B1=4'b0111;#10;
+A1=4'b1110;B1=4'b0010;#10;
+$finish;
+end
+
+endmodule
+
+
+
+
+/*
+ initial begin
+ for(i=0;i<8;i=i+1)
+ begin
+ a=$random;
+ b=$random;
+ #10;
+ end
+ end
+
+ initialbegin
+ $monitor("a=%b,b=%b,equal=%b,
+ greater=%b,less=%b",a,b,equal,greater,less);
+ #100$finish;
+
+ initial begin
+ repeat(5)begin
+ a=$random;
+ b=$random;
+ #5;
+ end
+*/

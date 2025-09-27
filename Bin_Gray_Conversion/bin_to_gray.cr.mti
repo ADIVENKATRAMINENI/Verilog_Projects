@@ -1,0 +1,8 @@
+C:/Verilog/work/bin_to_gray.v {1 {vlog -work work -stats=none C:/Verilog/work/bin_to_gray.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module bin_gray
+
+Top level modules:
+	bin_gray
+
+} {} {}}

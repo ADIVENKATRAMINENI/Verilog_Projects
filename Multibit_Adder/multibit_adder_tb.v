@@ -1,0 +1,57 @@
+module multibit_add_tb;
+
+reg [3:0] A1, B1;
+reg Cin;
+wire [3:0] Sum;
+wire Cout;
+
+multibit_add dut(.A(A1), .B(B1), .Cin(Cin), .S(Sum), .Cout(Cout));
+
+initial begin
+    $display("Time |   A     B    Cin |  Sum   Cout");
+    $monitor("%0t   |  %b  %b   %b   |  %b     %b",
+              $time, A1, B1, Cin, Sum, Cout);
+
+    A1 = 4'b0000; B1 = 4'b0001; Cin = 0; #10;
+    A1 = 4'b0010; B1 = 4'b1101; Cin = 0; #10;
+    A1 = 4'b0000; B1 = 4'b1001; Cin = 0; #10;
+    A1 = 4'b0110; B1 = 4'b0101; Cin = 0; #10;
+    A1 = 4'b0110; B1 = 4'b1101; Cin = 0; #10;
+    A1 = 4'b1010; B1 = 4'b1101; Cin = 0; #10;
+
+    $display("Testbench completed successfully");
+    $finish;
+end
+
+endmodule
+
+
+
+
+
+
+/*N'bXXXX
+
+In Verilog, you can represent numbers in binary, decimal, octal, or hexadecimal using this general format:
+
+<size>'<base><value>
+
+
+Where:
+size ? Number of bits
+4 means 4 bits (can hold values from 0 to 15 in decimal).
+'b ? Base indicator
+'b ? binary
+'d ? decimal
+'h ? hexadecimal
+'o ? octal
+value ? The actual number in that base
+
+For binary, only 0 or 1.
+Other Examples
+Verilog	Meaning
+4'b1010	Binary 1010 ? decimal 10
+4'd10	Decimal 10 ? binary 1010
+4'hA	Hexadecimal A ? binary 1010
+4'b1111	Binary 1111 ? decimal 15
+8'b00001111	8-bit binary ? decimal  15*/

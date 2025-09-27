@@ -1,0 +1,26 @@
+`timescale 1ns/1ps
+module Half_Adder_tb;
+
+reg a1,b1;
+wire sum1,carry1;
+
+Half_Adder uut(.a(a1),.b(b1),.sum(sum1),.carry(carry1));
+
+initial begin
+$display("Time a b | Sum Carry");
+$monitor("%0t %b %b | %b %b",$time,a1,b1,sum1,carry1);
+a1=0;b1=0;#10;
+a1=1;b1=0;#5;
+a1=0;b1=1;#10;
+a1=1;b1=1;#10;
+a1=1;b1=0;#10;
+a1=0;b1=0;#10;
+a1=1;b1=0;#5;
+a1=0;b1=1;#10;
+a1=1;b1=1;#10;
+a1=1;b1=0;#10;
+$finish;
+end
+
+endmodule
+

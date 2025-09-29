@@ -1,0 +1,19 @@
+module tb_demux;
+    reg d00;
+    reg [1:0] s1;
+    wire [3:0] y1;
+
+    demux_fourtoone DUT(.D00(d00),.s(s1),.y(y1));
+
+    initial begin
+$display("Time d00  s1  | y1");
+$monitor("Time=%0t %b %b | %b",$time,d00,s1,y1);
+ d00 = 1; s1= 2'b00; #10;
+        s1 = 2'b01; #10;
+        s1 = 2'b10; #10;
+        s1 = 2'b11; #10;
+
+        d00= 0; s1 = 2'b10; #10;
+        $stop;
+    end
+endmodule

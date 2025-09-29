@@ -1,0 +1,10 @@
+module muxfour_one(input [3:0]D0,D1,D2,D3,S1,S0,output reg [3:0]O);
+
+
+always @(*) begin
+O= S1 ? (S0?D3:D2):(S0:D2:D1);
+end
+
+
+endmodule
+

@@ -1,0 +1,23 @@
+module testbenchtwo_one;
+
+reg D00,D11,S1;
+wire O1;
+muxtwo_one dut(.D0(D00),.D1(D11),.S(S1),.O(O1));
+
+initial
+begin
+
+$display("Time D11 D00 S1 | O1");
+$monitor("%0t %b %b %b | %b ", $time,D11,D00,S1,O1);
+D00=0;D11=1;S1=0;#10;
+D00=1;D11=0;S1=0;#10;
+D00=1;D11=1;S1=1;#10;
+D00=1;D11=0;S1=1;#10;
+D00=0;D11=1;S1=1;#10;
+$$display("testbench tested successfully");
+$finish;
+end
+
+endmodule
+
+

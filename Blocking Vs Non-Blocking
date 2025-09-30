@@ -1,60 +1,48 @@
-# Blocking vs Non-Blocking Assignments in Verilog
-
+Blocking vs Non-Blocking Assignments in Verilog:
 This repository explains **blocking (`=`)** vs **non-blocking (`<=`)** assignments in Verilog HDL, how they behave in simulation, and when to use each.
-
----
 
 ## 📘 Introduction
 
 Verilog provides two types of procedural assignments:
-
 - **Blocking assignment:** `=`
 - **Non-blocking assignment:** `<=`
 
 Although they look similar, they behave very differently in simulation and synthesis, especially inside sequential (`always`) blocks.
-
 ---
 
-## ⚡ Blocking Assignment (`=`)
+## Blocking Assignment (`=`)
 
-### 🔑 Characteristics
+🔑 Characteristics
 - Executes **immediately** and **in order**.
 - Each statement **blocks** the next one until it finishes.
 - Later statements **see the updated value** of earlier statements.
 - Commonly used in **combinational logic** or inside `initial` blocks for testbenches.
 
-### Example
-```verilog
+Example : verilog
 always @(*) begin
     a = b & c;   // executes first
     d = a | e;   // executes next, uses NEW value of a
 end
 In this example, d gets the updated value of a.
 
+
 🔁 Non-Blocking Assignment (<=)
 🔑 Characteristics
 RHS (right-hand side) is evaluated immediately when the statement is reached.
-
 The LHS (left-hand side) update is scheduled to happen later (at the end of the current simulation time-step or after a specified delay).
-
 Statements do not block each other; they appear to execute in parallel.
-
 Commonly used in sequential logic / flip-flops triggered by clock edges.
 
-Example
-verilog
-Copy code
+Example : verilog
 always @(posedge clk) begin
     q1 <= d;       // all RHS evaluated now
     q2 <= q1;      // q2 sees OLD q1, not the new q1
 end
 This models real flip-flops: q2 captures the old value of q1 on the same clock edge.
 
-⏱️ Blocking vs Non-Blocking with Delay
-Consider:
 
-verilog
-Copy code
+⏱️ Blocking vs Non-Blocking with Delay :
+Consider: verilog
 // Blocking
 begin
     a = #5 b;
@@ -66,61 +54,50 @@ begin
     a <= #5 b;
     c <= #5 a;
 end
-Simulation Behavior
-Time	Blocking (=)	Non-blocking (<=)
-t0	start	start
-t0+5	a = b	a scheduled for t0+5, c scheduled for t0+5
-t0+10	c = a (uses new a)	at t0+5 both update, c uses old a
+
+Simulation Behavior :
+Time	                Blocking (=)	         Non-blocking (<=)
+t0	                     start	                     start
+t0+5	                 a = b	                 a scheduled for t0+5, c scheduled for t0+5
+t0+10	              c = a (uses new a)	     at t0+5 both update, c uses old a
 
 Blocking: delays accumulate; later statements see earlier updates.
-
 Non-blocking: RHS evaluated immediately; updates occur later at scheduled delays.
 
-📝 Example with Different Delays
-verilog
-Copy code
+📝 Example with Different Delays : verilog
 a <= #5  b;
 c <= #15 a;
 At t0: evaluate RHS (b and old a).
-
 a scheduled to update at t0+5.
-
 c scheduled to update at t0+15 with old a.
-
 c does not see the updated value of a.
 
-🪛 When to Use
-Use Case	Recommended Assignment
-Combinational logic inside always @(*)	Blocking (=)
-Clocked sequential logic (always @(posedge clk) or @(negedge clk))	Non-blocking (<=)
+
+🪛 When to Use : 
+Use Case	                                                                         Recommended Assignment
+Combinational logic  inside always @(*)	                                                Blocking (=)
+Clocked sequential logic (always @(posedge clk) or @(negedge clk))	                  Non-blocking (<=)
 Testbench stimulus (initial blocks)	Blocking (=)
+
 
 Golden Rule:
 Use non-blocking for flip-flops and blocking for combinational logic.
-
 🔍 Key Takeaways
 Blocking (=) executes sequentially; each assignment happens immediately.
-
 Non-blocking (<=) evaluates RHS first, then updates LHS later, allowing parallel behavior.
-
 Use non-blocking for registers in clocked always blocks to match real hardware timing.
-
 Mixing = and <= in the same always block is discouraged (can lead to race conditions).
-
 Adding delays (#) behaves differently: in blocking, delays accumulate; in non-blocking, updates are scheduled independently.
 
 📈 Timeline Illustration
 Example:
 
-sql
-Copy code
 initial begin
   a = 0; b = 1; c = 0;
   a <= #5 b;      // schedules a update at t+5
   c <= #15 a;     // schedules c update at t+15 with OLD a
 end
-ini
-Copy code
+initial begin
 t=0      a=0, c=0  (RHS captured)
 t=5      a=1       (updated)
 t=15     c=0       (old value of a)

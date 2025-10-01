@@ -1,0 +1,23 @@
+module tb_demux_eighttoone;
+    reg d00;
+    reg [2:0] s1;
+    wire [7:0] y1;
+
+    demux_eighttoone DUT(.D00(d00),.s(s1),.y(y1));
+
+    initial begin
+$display("Time d00  s1  | y1");
+$monitor("Time=%0t %b %b | %b",$time,d00,s1,y1);
+ d00 = 1; s1= 3'b000; #10;
+        s1 = 3'b101; #10;
+s1= 3'b011; #10;
+        s1 = 3'b110; #10;s1= 3'b000; #10;
+        s1 = 3'b001; #10;
+s1= 3'b110; #10;
+        s1 = 3'b101; #10;
+        
+
+        d00= 0; s1 = 3'b111; #10;
+        $stop;
+    end
+endmodule

@@ -1,0 +1,15 @@
+C:/Verilog/Work/Encoder.v {1 {vlog -work work -stats=none C:/Verilog/Work/Encoder.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module encoder
+
+Top level modules:
+	encoder
+
+} {} {}} C:/Verilog/Work/Encoder_tb.v {1 {vlog -work work -stats=none C:/Verilog/Work/Encoder_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module encoder_testbench
+
+Top level modules:
+	encoder_testbench
+
+} {} {}}

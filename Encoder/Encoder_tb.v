@@ -1,0 +1,18 @@
+module encoder_testbench;
+
+reg [7:0]I;
+wire [2:0]E;
+
+encoder dut(.I(I),.E(E));
+
+initial begin
+//$dumpfile("Encoder_testbench.vcd");
+$display("Time I | E");
+$monitor("%0t %b | %b ",$time,I,E);
+#10;I=8'b0010_1010;
+#20;repeat(5)
+I=$random;
+
+end
+endmodule
+

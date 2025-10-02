@@ -1,0 +1,20 @@
+module t_ff(Clk,T,rst,Q,Q_bar);
+
+input Clk,T,rst;
+output reg Q;
+output Q_bar;
+
+always @(posedge Clk)
+begin
+if(rst)
+Q <= 1'b0;
+else
+case({T})
+1'b0 : Q<=Q;
+1'b1 : Q<=~Q;
+endcase
+end
+
+assign Q_bar= ~Q;
+
+endmodule

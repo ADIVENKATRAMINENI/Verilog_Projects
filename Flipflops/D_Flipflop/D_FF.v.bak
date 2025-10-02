@@ -1,0 +1,14 @@
+module d_ff(D,Clk,reset,Q,Q_bar);
+input D;
+input Clk,reset;
+output reg Q;
+output Q_bar;
+always @(posedge Clk)
+begin
+if({reset})
+Q <= 1'b0;
+else 
+Q <= D;
+end
+assign Q_bar = ~Q;
+endmodule

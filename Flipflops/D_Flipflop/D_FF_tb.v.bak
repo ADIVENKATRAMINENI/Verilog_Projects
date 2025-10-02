@@ -1,0 +1,27 @@
+module d_ff_tb;
+reg D,Clk,reset;
+wire Q,Q_bar;
+d_ff dut(.Clk(Clk),.reset(reset),.D(D),.Q(Q),.Q_bar(Q_bar));
+
+initial begin
+Clk=1'b0;
+always #5 Clk = ~Clk;
+end
+
+initial begin 
+reset =1;#10;
+reset=0;D=1'b0;#10;
+D=1'b0;#10;
+D=1'b1;#10;
+D=1'b0;#10;
+reset=1;D=1'b1;#10;
+reset=0;D=1'b1;#10;
+end
+initial begin 
+$monitor("%0t | D=%b, Q=%b, Q_bar=%b  Clk=%b, reset=%b  ", $time, D, Q, Q_bar, Clk, reset);
+#200 $finish;
+end
+endmodule
+
+
+

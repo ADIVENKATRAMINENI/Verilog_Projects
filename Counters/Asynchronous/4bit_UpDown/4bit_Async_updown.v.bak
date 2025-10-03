@@ -1,0 +1,94 @@
+`timescale 1ns/1ps
+module fourbit_Async_updown(input rst,up_down,Clk,output reg [3:0]Count);
+
+reg q0=1'b0,q1=1'b0,q2=1'b0,q3=1'b0;
+
+always @(posedge Clk or posedge rst) begin
+if(rst)
+q0<=1'b0;
+else
+q0 <=~q0;
+end
+
+always @(q0 or posedge rst) begin
+if(rst)
+q1<=1'b0;
+else if(up_down) begin
+if(~q0 && $fell(q0))
+q1 <=~q1;
+else if(q0 && $rise(q0))
+q1 <=~q1;
+end
+end
+
+always @(q1 or posedge rst) begin
+if(rst)
+q2<=1'b0;
+else if(up_down) begin
+if(~q1 && $fell(q0))
+q2 <=~q2;
+else if(q1 && $rise(q0))
+q2 <=~q2;
+end
+end
+
+always @(q2 or posedge rst) begin
+if(rst)
+q3<=1'b0;
+else if(up_down) begin
+if(~q2 && $fell(q0))
+q3 <=~q3;
+else if(q2 && $rise(q0))
+q3 <=~q3;
+end
+end
+assign Count={q3,q2,q1,q0};
+
+endmodule
+
+
+
+
+
+//--------------------------------------------------------------
+// NOTES: 4-Bit Asynchronous Up/Down Counter
+//--------------------------------------------------------------
+
+/*
+1. REGISTERS vs PORTS:
+   - q0, q1, q2, q3 are internal flip-flops that hold the counter bits.
+   - The 'Count' output is just {q3,q2,q1,q0}.
+   - We don?t declare q0-q3 as input/output because they are not connected
+     directly to pins; they live inside the module.
+
+2. RIPPLE CLOCKING:
+   - q0 (LSB) toggles on the main Clk every rising edge ? divides clock by 2.
+   - q1 toggles whenever q0 completes a full cycle (when q0 wraps 1?0).
+   - q2 toggles whenever q1 wraps 1?0, and so on.
+   - This creates the classic ripple (asynchronous) effect:
+       Clk ? q0 ? q1 ? q2 ? q3
+
+3. UP / DOWN CONTROL:
+   - Up_Down = 1 ? UP counter ? toggle higher bits on the FALLING edge (1?0) 
+                 of the lower bit (because wrapping to 0 increments the next bit).
+   - Up_Down = 0 ? DOWN counter ? toggle higher bits on the RISING edge (0?1)
+                 of the lower bit (because wrapping to 1 decrements the next bit).
+
+4. WHY USE "!qN && $fell(qN)":
+   - $fell(qN) = true for one moment whenever qN changes 1?0.
+   - !qN        = confirms qN?s current level is 0 after that edge.
+   - Together they mean: "qN just wrapped to 0 ? toggle the next bit now."
+   - This avoids false triggers and makes the intent clear.
+
+5. RESET:
+   - 'rst' is asynchronous active-high ? clears all bits to 0 immediately,
+     without waiting for any clock edge.
+
+6. SUMMARY OF BEHAVIOR:
+   - Counter counts UP or DOWN in binary from 0000 ? 1111 ? 0000...
+   - Each higher bit toggles only when all lower bits have completed a full cycle.
+   - This is a standard ripple counter implemented in Verilog.
+
+TIP: In a testbench, watch each qN waveform to see the divide-by-2 relationship.
+*/
+

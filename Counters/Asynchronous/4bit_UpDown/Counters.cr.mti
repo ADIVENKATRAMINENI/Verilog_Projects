@@ -1,0 +1,36 @@
+C:/Verilog/Work/3bit_Async_down_tb.v {1 {vlog -work work -stats=none C:/Verilog/Work/3bit_Async_down_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module threebit_async_downrst_tb
+
+Top level modules:
+	threebit_async_downrst_tb
+
+} {} {}} C:/Verilog/Work/2bit_Async_Up_tb.v {1 {vlog -work work -stats=none C:/Verilog/Work/2bit_Async_Up_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module twobit_async_uprst_tb
+
+Top level modules:
+	twobit_async_uprst_tb
+
+} {} {}} C:/Verilog/Work/4bit_Async_updown_tb.v {1 {vlog -work work -stats=none C:/Verilog/Work/4bit_Async_updown_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module fourbit_Async_updown_tb
+
+Top level modules:
+	fourbit_Async_updown_tb
+
+} {} {}} C:/Verilog/Work/3bit_Async_down.v {1 {vlog -work work -stats=none C:/Verilog/Work/3bit_Async_down.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module threebit_async_downrst
+
+Top level modules:
+	threebit_async_downrst
+
+} {} {}} C:/Verilog/Work/2bit_Async_Up.v {1 {vlog -work work -stats=none C:/Verilog/Work/2bit_Async_Up.v
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module twobit_async_uprst
+
+Top level modules:
+	twobit_async_uprst
+
+} {} {}}

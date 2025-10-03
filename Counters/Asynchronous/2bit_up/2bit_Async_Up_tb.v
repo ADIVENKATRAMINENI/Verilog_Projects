@@ -1,0 +1,173 @@
+`timescale 1ns/1ps
+
+module twobit_async_uprst_tb;
+
+reg Clk;reg rst=1'b1;
+wire [1:0]Count;
+
+twobit_async_uprst  dut(.rst(rst),.Clk(Clk),.Count(Count)); // Instantiate
+
+ // Clock: 10 ns period
+initial begin
+Clk=1'b0;
+end
+
+always #5 Clk = ~Clk;
+
+
+initial begin
+$display("Time   rst  Clk  | Count");
+$monitor("%0t  %b  %b |  %b", $time, rst,Clk, Count);
+        rst = 1; // Apply reset
+        #10 rst = 0; // Deassert reset after 10 time units
+
+        // Allow the counter to run for a few cycles
+        #100;
+
+        // Apply reset again to check reset functionality
+        rst = 1;
+        #10 rst = 0;
+        #100;
+
+        $display("Simulation finished.");
+        $finish; // End the simulation
+    end
+
+endmodule
+
+
+
+
+
+/*------------------------------------------------------------------------------------------------
+1.Here is the detailed breakdown for the error(only one output(initial input) got with error):
+
+The "Flatline" Error: Simulation Runtime vs. Testbench Logic
+The issue is best understood as a mismatch between the run duration you provided to the simulator and 
+the total time units required to reach the $finish command in your testbench.
+
+1. The Testbench's Duration (The run -all Problem)
+Your testbench, after the corrections, had its final event ($finish) scheduled at:
+
+Total Time=10 ns(initial reset)+400 ns(first run)+10 ns(second reset)+100 ns(second run)=520 ns
+When you use the "Run" button in the ModelSim GUI without specifying a time, 
+it often defaults to a small, fixed duration (e.g., 100ns) or only runs until the first few scheduled events.
+
+If you ran the default 100ns, the simulation would stop at t=100ns, 
+well before the first 400ns section was complete and long before the total 520ns was reached.
+
+When the simulation stops early, the signals in the waveform window appear flat because 
+they haven't had enough time to transition through the counting cycles.
+
+
+
+
+
+2. The Solution: Forcing the Simulation Length
+By typing run 600ns in the Transcript window, you manually overrode the simulator's default setting and 
+forced the kernel to execute all events up to the specified time (600ns).
+
+Since 600ns>520ns, the simulator successfully:
+
+Executed all the clock cycles, reset pulses, and delays.
+
+Reached the $finish command at 520ns.
+
+Updated the waveform with all the resulting signal changes.
+
+------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------------------------
+Error 2:Got down counter wave for my code
+
+Why Use negedge q0 for Up-Counting ?
+The goal of a 2-bit up-counter is the sequence: 00?01?10?11?00.
+In a ripple counter, each flip-flop (FF) is a toggle flip-flop (T-FF), and the output of one FF acts as the clock input to the next FF.
+
+1. The LSB Toggle
+Your Least Significant Bit (LSB), q0, toggles on every positive edge of the main clock (Clk):
+Count	q0 Change
+00?01	0?1 (Positive Edge)
+01?10	1?0 (Negative Edge)
+10?11	0?1 (Positive Edge)
+11?00	1?0 (Negative Edge)
+
+
+2. The Logic for Up-Counting
+The Most Significant Bit (q1) must only toggle (change its state) when the LSB (q0) transitions from 1 back to 0 (i.e., 
+when q0 is "full" and wraps around).
+
+When going from 01?10: The LSB (q0) changes from 1?0, and the MSB (q1) changes from 0?1. This is an increment of the MSB.
+When going from 11?00: The LSB (q0) changes from 1?0, and the MSB (q1) changes from 1?0 (completing the cycle).
+
+Since q1 must change its state precisely when q0 undergoes a 1?0 (falling) transition, you must use the negative edge of q0 as the clock signal for the q1 flip-flop.
+
+This is why the code for the MSB is:
+
+always @(negedge q0 or posedge rst) begin 
+    //...
+end
+------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------------------------
+3. 1ns=1000ps(every time I run for ex:220ns it runs till 220000ps then If I run again it will add 220000 more into the 1st 220k ps waveform.
+--Your ?extra? lines come from the counter updating every clock edge while the simulation kept running past 600 ns.
+--posedge/negedge defines which clock transition triggers the sequential block.
+
+--$monitor printed each update because the signals kept changing with the free-running clock.
+------------------------------------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------------------------------------
+4.
+MSB (q1) Loop: negedge q0 and posedge rst
+The second FF (MSB, q1) is the ripple driver. It must be sensitive to its clock source (q0) and the asynchronous reset (rst).
+
+
+Why negedge q0? (Timing and Up-Counting)
+This is the key to the up counter function:
+The MSB must be clocked by the LSB output (q0) to create the ripple effect.
+For an up counter (01?10), the MSB must toggle precisely when the LSB transitions from 1 to 0.
+The 1?0 transition is a negative edge (negedge).
+
+Why Not posedge q0?
+As we observed in your simulation, using posedge q0 causes a down counter (11?10?01?00) because the toggle happens when q0 goes from 0 to 1.
+
+Why posedge rst is Needed Again? (Asynchronous Control)
+The MSB also needs to be cleared immediately when the reset is asserted. 
+Just like the LSB, you must include posedge rst in the sensitivity list of the MSB's always block to ensure 
+its reset is asynchronous and takes immediate effect.
+------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

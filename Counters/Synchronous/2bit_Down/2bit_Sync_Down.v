@@ -14,4 +14,19 @@ end
 end
 
 
+
 endmodule
+
+
+/*
+
+always @(posedge Clk or posedge rst) begin
+    if (rst) begin
+        // Asynchronous Reset to 11 (Active high reset)
+        Count <= 2'b11;
+    end // <-- The problem is here: missing 'else'
+    // This line runs regardless of 'rst' state
+    Count <= Count - 2'b01; 
+end
+
+*/

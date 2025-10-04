@@ -1,0 +1,15 @@
+`timescale 1ns/1ps
+
+module modn_counter #(parameter n=11)(input Clk,rst,output reg [n-1:0]Count);
+
+always @(posedge Clk or posedge rst) begin
+if(rst)
+Count<=0;
+else if(Count == n-1)
+Count <=0;
+else
+Count <=Count+1;
+
+end
+endmodule
+

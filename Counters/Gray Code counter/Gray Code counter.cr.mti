@@ -1,0 +1,15 @@
+{C:/Verilog/Work/Gray Code counter_tb.v} {1 {vlog -work work -stats=none {C:/Verilog/Work/Gray Code counter_tb.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module test_bench
+
+Top level modules:
+	test_bench
+
+} {} {}} {C:/Verilog/Work/Gray Code counter.v} {1 {vlog -work work -stats=none {C:/Verilog/Work/Gray Code counter.v}
+Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+-- Compiling module gray_counter
+
+Top level modules:
+	gray_counter
+
+} {} {}}
